@@ -5,8 +5,8 @@ const defaultTools = [
   { label: "Jobs", href: "https://jobs.palengke.es", appKey: "jobs" },
   { label: "Home", href: "https://home.palengke.es", appKey: "home" },
   { label: "Guide", href: "https://guide.palengke.es", appKey: "guide" },
-  { label: "PDF Translator", href: "https://pdf-spanish-to-english.palengke.es", appKey: "pdf" },
-  { label: "CV Creator", href: "https://cv-creator.palengke.es", appKey: "cv" },
+  { label: "PDF", href: "https://pdf-spanish-to-english.palengke.es", appKey: "pdf" },
+  { label: "CV", href: "https://cv-creator.palengke.es", appKey: "cv" },
 ];
 
 const defaultAdminTabs = [
@@ -54,7 +54,7 @@ export function PalengkeHeader({
   nav = null,
   productHref,
   productLabel,
-  showCurrentAppLink = false,
+  showCurrentAppLink = true,
   sticky = true,
 }) {
   const brandContent = React.createElement(

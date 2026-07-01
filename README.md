@@ -21,4 +21,4 @@ import "@palengke/shared-header/styles.css";
 
 Keep app-specific authenticated menus, notifications, admin tools, and quick actions in the `actions` slot.
 
-The shared ecosystem navigation automatically hides the current app when `currentApp` matches a link `appKey`, so Palengke links to Jobs/Home/Guide/PDF Translator/CV Creator, Jobs links to Palengke/Home/Guide/PDF Translator/CV Creator, and so on. Pass `showCurrentAppLink` only if an app explicitly wants to include itself.
+The shared ecosystem navigation shows all Palengke tools and marks the current app as the active pill, matching the production palengke.es header. Set `showCurrentAppLink={false}` only if a special surface must hide itself.
