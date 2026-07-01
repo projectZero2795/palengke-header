@@ -127,13 +127,6 @@
   outline: 0;
 }
 
-.palengke-global-header__tool-link.is-active {
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.16), rgba(96, 165, 250, 0.12));
-  border-color: rgba(251, 191, 36, 0.48);
-  color: #f8fafc;
-  outline: 0;
-}
-
 .palengke-global-header__actions.topbar-actions {
   align-items: center;
   background: rgba(15, 23, 42, 0.48);
@@ -205,7 +198,8 @@
 
 .palengke-global-header .topbar-icon-button,
 .palengke-global-header .notification-menu__trigger,
-.palengke-global-header .icon-button {
+.palengke-global-header .icon-button,
+.palengke-global-header__feature-button {
   align-items: center;
   background: #111827;
   border: 1px solid rgba(148, 163, 184, 0.22);
@@ -228,26 +222,73 @@
 .palengke-global-header .notification-menu__trigger:hover,
 .palengke-global-header .notification-menu__trigger:focus-visible,
 .palengke-global-header .icon-button:hover,
-.palengke-global-header .icon-button:focus-visible {
+.palengke-global-header .icon-button:focus-visible,
+.palengke-global-header__feature-button:hover,
+.palengke-global-header__feature-button:focus-visible {
   background: #172033;
   border-color: rgba(96, 165, 250, 0.42);
   color: #f8fafc;
   outline: 0;
 }
 
-.palengke-global-header .topbar-icon-button--news {
+.palengke-global-header .topbar-icon-button--news,
+.palengke-global-header__feature-button--news {
   border-color: rgba(251, 191, 36, 0.38);
   color: #fbbf24;
 }
 
-.palengke-global-header .topbar-icon-button--global-chat {
+.palengke-global-header .topbar-icon-button--global-chat,
+.palengke-global-header__feature-button--chat {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(20, 184, 166, 0.16)), #111827;
   border-color: rgba(37, 99, 235, 0.34);
   color: #60a5fa;
 }
 
-.palengke-global-header .wishlist-menu__trigger {
+.palengke-global-header .wishlist-menu__trigger,
+.palengke-global-header__feature-button--wishlist {
   color: #f87171;
+}
+
+.palengke-global-header__feature-button--admin {
+  border-color: rgba(148, 163, 184, 0.28);
+  color: #dbeafe;
+}
+
+.palengke-global-header__feature-button--notifications {
+  color: #e2e8f0;
+}
+
+.palengke-global-header__feature-button--account {
+  border-color: rgba(251, 191, 36, 0.38);
+  color: #fbbf24;
+}
+
+.palengke-global-header__feature-label {
+  clip: rect(0 0 0 0);
+  border: 0;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.palengke-global-header__account-mark {
+  align-items: center;
+  background: linear-gradient(135deg, #2563eb, #f59e0b);
+  border: 2px solid rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 950;
+  height: 23px;
+  justify-content: center;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  width: 23px;
 }
 
 .palengke-global-header .notification-menu__trigger span,
@@ -396,6 +437,7 @@
   .palengke-global-header__actions.topbar-actions {
     grid-column: 2;
     grid-row: 1;
+    gap: 4px;
     justify-content: flex-end;
     max-width: 52vw;
     overflow-x: auto;
@@ -431,7 +473,8 @@
   .palengke-global-header .topbar-icon-button,
   .palengke-global-header .notification-menu__trigger,
   .palengke-global-header .icon-button,
-  .palengke-global-header .account-menu__trigger {
+  .palengke-global-header .account-menu__trigger,
+  .palengke-global-header__feature-button {
     height: 32px;
     min-height: 32px;
     width: 32px;
@@ -466,10 +509,12 @@
   .palengke-global-header__actions.topbar-actions {
     grid-column: 2;
     grid-row: 1;
+    gap: 3px;
     justify-content: flex-end;
-    max-width: calc(56vw - 12px);
+    max-width: calc(58vw - 12px);
     min-width: 0;
     overflow-x: auto;
+    padding: 3px;
     scrollbar-width: none;
   }
 
@@ -503,10 +548,23 @@
   .palengke-global-header .topbar-icon-button,
   .palengke-global-header .notification-menu__trigger,
   .palengke-global-header .icon-button,
-  .palengke-global-header .account-menu__trigger {
-    height: 30px;
-    min-height: 30px;
-    width: 30px;
+  .palengke-global-header .account-menu__trigger,
+  .palengke-global-header__feature-button {
+    height: 28px;
+    min-height: 28px;
+    width: 28px;
+  }
+
+  .palengke-global-header__feature-button svg {
+    height: 16px;
+    width: 16px;
+  }
+
+  .palengke-global-header__account-mark {
+    border-width: 1px;
+    font-size: 0.66rem;
+    height: 20px;
+    width: 20px;
   }
 
   .palengke-global-header .topbar-signin,
