@@ -1,6 +1,7 @@
 .palengke-global-header,
 .palengke-global-header * {
   box-sizing: border-box;
+  line-height: normal;
 }
 
 .palengke-global-header {
