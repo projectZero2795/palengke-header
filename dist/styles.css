@@ -2,7 +2,7 @@
   align-items: center;
   background:
     linear-gradient(90deg, rgba(248, 249, 251, 0.98), rgba(248, 249, 251, 0.9)),
-    url("/images/palengke-cover.png") center / cover;
+    url("https://palengke.es/images/palengke-cover.png") center / cover;
   border-bottom: 1px solid var(--line, rgba(148, 163, 184, 0.24));
   display: flex;
   gap: clamp(10px, 2vw, 24px);
@@ -55,6 +55,10 @@
 .palengke-global-header__domain.brand-wordmark__domain {
   color: #b91c1c;
   margin-left: 2px;
+}
+
+.palengke-global-header__wordmark.brand-wordmark > span:first-child {
+  color: var(--brand-dark, #0b1f3a);
 }
 
 .palengke-global-header__product.brand-product {
