@@ -1,0 +1,26 @@
+{
+  "name": "@palengke/shared-header",
+  "version": "0.1.0",
+  "description": "Shared Palengke ecosystem header React component",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": [
+    "./dist/styles.css"
+  ],
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "license": "MIT"
+}
