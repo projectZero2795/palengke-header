@@ -1,15 +1,17 @@
 .palengke-global-header.topbar {
   align-items: center;
   backdrop-filter: blur(16px);
-  background: linear-gradient(90deg, #0b1220, #111827);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(96, 165, 250, 0.12), transparent 34%),
+    linear-gradient(90deg, rgba(8, 13, 25, 0.98), rgba(15, 23, 42, 0.98));
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.24);
   color: #f8fafc;
   display: flex;
-  gap: clamp(10px, 2vw, 24px);
+  gap: clamp(8px, 1.5vw, 18px);
   justify-content: space-between;
   min-width: 0;
-  padding: 18px clamp(18px, 4vw, 48px);
+  padding: 12px clamp(16px, 3vw, 40px);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -39,10 +41,10 @@
   color: #f8fafc;
   display: inline-flex;
   font-family: "Brush Script MT", "SignPainter", "Snell Roundhand", "Segoe Script", "Lucida Handwriting", cursive;
-  font-size: clamp(2.15rem, 3.8vw, 3.25rem);
+  font-size: clamp(1.9rem, 3vw, 2.75rem);
   font-weight: 900;
   letter-spacing: 0;
-  line-height: 0.86;
+  line-height: 0.9;
   paint-order: stroke fill;
   text-shadow:
     0 2px 0 rgba(15, 23, 42, 0.98),
@@ -82,12 +84,18 @@
 
 .palengke-global-header__tools {
   align-items: center;
+  background: rgba(15, 23, 42, 0.42);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   display: flex;
   flex: 1 1 auto;
-  gap: 8px;
+  gap: 4px;
   justify-content: center;
+  max-width: 720px;
   min-width: 0;
   overflow-x: auto;
+  padding: 4px;
   scrollbar-width: none;
 }
 
@@ -97,42 +105,47 @@
 
 .palengke-global-header__tool-link {
   align-items: center;
-  background: #111827;
-  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: transparent;
+  border: 1px solid transparent;
   border-radius: 999px;
-  color: #e2e8f0;
+  color: #cbd5e1;
   display: inline-flex;
-  font-size: 0.92rem;
+  font-size: 0.86rem;
   font-weight: 900;
   justify-content: center;
-  min-height: 42px;
-  padding: 9px 16px;
+  min-height: 34px;
+  padding: 7px 13px;
   text-decoration: none;
   white-space: nowrap;
 }
 
 .palengke-global-header__tool-link:hover,
 .palengke-global-header__tool-link:focus-visible {
-  background: #172033;
+  background: rgba(96, 165, 250, 0.12);
   border-color: rgba(96, 165, 250, 0.42);
   color: #f8fafc;
   outline: 0;
 }
 
 .palengke-global-header__tool-link.is-active {
-  background: #111827;
-  border-color: rgba(251, 191, 36, 0.68);
-  color: #60a5fa;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.16), rgba(96, 165, 250, 0.12));
+  border-color: rgba(251, 191, 36, 0.48);
+  color: #f8fafc;
   outline: 0;
 }
 
 .palengke-global-header__actions.topbar-actions {
   align-items: center;
+  background: rgba(15, 23, 42, 0.48);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   display: flex;
   flex: 0 0 auto;
-  gap: 10px;
+  gap: 6px;
   justify-content: flex-end;
   min-width: 0;
+  padding: 4px;
 }
 
 .palengke-global-header .topbar-auth-actions,
@@ -157,12 +170,12 @@
   box-shadow: none;
   color: #ffffff;
   display: inline-flex;
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   font-weight: 900;
   gap: 6px;
   justify-content: center;
-  min-height: 40px;
-  padding: 8px 14px;
+  min-height: 36px;
+  padding: 7px 12px;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -201,13 +214,13 @@
   color: #dbeafe;
   display: inline-flex;
   flex: 0 0 auto;
-  height: 42px;
+  height: 36px;
   justify-content: center;
-  min-height: 42px;
+  min-height: 36px;
   padding: 0;
   position: relative;
   text-decoration: none;
-  width: 42px;
+  width: 36px;
 }
 
 .palengke-global-header .topbar-icon-button:hover,
@@ -257,6 +270,18 @@
   top: -5px;
 }
 
+@media (max-width: 420px) {
+  .palengke-global-header .notification-menu__trigger span,
+  .palengke-global-header .global-chat-icon__badge {
+    border-width: 1px;
+    font-size: 0.58rem;
+    min-height: 15px;
+    min-width: 15px;
+    right: -3px;
+    top: -3px;
+  }
+}
+
 .palengke-global-header .account-menu,
 .palengke-global-header .notification-menu,
 .palengke-global-header .wishlist-menu,
@@ -274,11 +299,11 @@
   display: inline-flex;
   font-size: 0.86rem;
   font-weight: 950;
-  height: 44px;
+  height: 38px;
   justify-content: center;
   overflow: hidden;
   padding: 0;
-  width: 44px;
+  width: 38px;
 }
 
 .palengke-global-header .account-menu__trigger img {
@@ -330,22 +355,22 @@
 
 @media (max-width: 980px) {
   .palengke-global-header.topbar {
-    gap: 12px;
-    padding-left: 14px;
-    padding-right: 14px;
+    gap: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .palengke-global-header__actions.topbar-actions {
-    gap: 7px;
+    gap: 5px;
     min-width: 0;
   }
 }
 
 @media (max-width: 760px) {
   .palengke-global-header__tool-link {
-    font-size: 0.82rem;
-    min-height: 36px;
-    padding: 8px 12px;
+    font-size: 0.78rem;
+    min-height: 32px;
+    padding: 6px 10px;
   }
 }
 
@@ -353,9 +378,9 @@
   .palengke-global-header.topbar {
     align-items: center;
     display: grid;
-    gap: 10px;
+    gap: 8px;
     grid-template-columns: minmax(0, 1fr) auto;
-    padding: 12px 14px;
+    padding: 9px 10px 8px;
   }
 
   .palengke-global-header__brand-row {
@@ -365,13 +390,20 @@
   }
 
   .palengke-global-header__wordmark.brand-wordmark {
-    font-size: clamp(1.85rem, 9vw, 2.35rem);
+    font-size: clamp(1.65rem, 7vw, 2.05rem);
   }
 
   .palengke-global-header__actions.topbar-actions {
     grid-column: 2;
     grid-row: 1;
     justify-content: flex-end;
+    max-width: 52vw;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .palengke-global-header__actions.topbar-actions::-webkit-scrollbar {
+    display: none;
   }
 
   .palengke-global-header__tools {
@@ -391,18 +423,18 @@
   .palengke-global-header .visit-link,
   .palengke-global-header .ghost,
   .palengke-global-header .topbar-auth-secondary {
-    font-size: 0.84rem;
-    min-height: 36px;
-    padding: 7px 10px;
+    font-size: 0.78rem;
+    min-height: 32px;
+    padding: 6px 9px;
   }
 
   .palengke-global-header .topbar-icon-button,
   .palengke-global-header .notification-menu__trigger,
   .palengke-global-header .icon-button,
   .palengke-global-header .account-menu__trigger {
-    height: 38px;
-    min-height: 38px;
-    width: 38px;
+    height: 32px;
+    min-height: 32px;
+    width: 32px;
   }
 
   .palengke-global-header__product.brand-product {
@@ -414,9 +446,9 @@
 
 @media (max-width: 420px) {
   .palengke-global-header.topbar {
-    align-items: flex-start;
-    gap: 8px;
-    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 7px;
+    grid-template-columns: minmax(0, 1fr) auto;
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -424,22 +456,21 @@
   .palengke-global-header__brand-row {
     grid-column: 1;
     grid-row: 1;
-    max-width: 100%;
+    max-width: 44vw;
   }
 
   .palengke-global-header__wordmark.brand-wordmark {
-    font-size: clamp(1.55rem, 7vw, 1.9rem);
+    font-size: clamp(1.42rem, 6.2vw, 1.7rem);
   }
 
   .palengke-global-header__actions.topbar-actions {
-    grid-column: 1;
-    grid-row: 2;
-    justify-content: flex-start;
+    grid-column: 2;
+    grid-row: 1;
+    justify-content: flex-end;
+    max-width: calc(56vw - 12px);
     min-width: 0;
     overflow-x: auto;
-    padding-bottom: 2px;
     scrollbar-width: none;
-    width: 100%;
   }
 
   .palengke-global-header__actions.topbar-actions::-webkit-scrollbar {
@@ -447,14 +478,19 @@
   }
 
   .palengke-global-header__tools {
-    grid-row: 3;
-    gap: 6px;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    gap: 3px;
+    padding: 3px;
   }
 
   .palengke-global-header__tool-link {
-    font-size: 0.72rem;
-    min-height: 32px;
-    padding: 6px 9px;
+    font-size: 0.69rem;
+    max-width: 112px;
+    min-height: 28px;
+    overflow: hidden;
+    padding: 5px 8px;
+    text-overflow: ellipsis;
   }
 
   .palengke-global-header .topbar-auth-actions,
@@ -468,18 +504,18 @@
   .palengke-global-header .notification-menu__trigger,
   .palengke-global-header .icon-button,
   .palengke-global-header .account-menu__trigger {
-    height: 32px;
-    min-height: 32px;
-    width: 32px;
+    height: 30px;
+    min-height: 30px;
+    width: 30px;
   }
 
   .palengke-global-header .topbar-signin,
   .palengke-global-header .visit-link,
   .palengke-global-header .ghost,
   .palengke-global-header .topbar-auth-secondary {
-    font-size: 0.76rem;
-    min-height: 32px;
-    padding: 0 8px;
+    font-size: 0.72rem;
+    min-height: 30px;
+    padding: 0 7px;
   }
 }
 
