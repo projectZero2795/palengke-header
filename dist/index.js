@@ -5,7 +5,7 @@ const defaultTools = [
   { label: "Jobs", href: "https://jobs.palengke.es", appKey: "jobs" },
   { label: "Home", href: "https://home.palengke.es", appKey: "home" },
   { label: "Guide", href: "https://guide.palengke.es", appKey: "guide" },
-  { label: "CV", href: "https://cv.palengke.es", appKey: "cv" },
+  { label: "CV", href: "https://cv-creator.palengke.es", appKey: "cv" },
 ];
 
 function classNames(...parts) {
