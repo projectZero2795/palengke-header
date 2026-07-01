@@ -129,9 +129,9 @@ function renderFeatureAction(action) {
 export function PalengkeWordmark({ className = "", label = "Palengke.es" } = {}) {
   return React.createElement(
     "span",
-    { className: classNames("brand-wordmark palengke-global-header__wordmark", className), "aria-label": label },
+    { className: classNames("palengke-global-header__wordmark", className), "aria-label": label },
     React.createElement("span", null, "Palengke"),
-    React.createElement("span", { className: "brand-wordmark__domain palengke-global-header__domain" }, ".es"),
+    React.createElement("span", { className: "palengke-global-header__domain" }, ".es"),
   );
 }
 
@@ -155,13 +155,13 @@ export function PalengkeHeader({
   );
   const brand = React.createElement(
     "a",
-    { "aria-label": "Palengke.es", className: "brand palengke-global-header__brand", href: homeHref },
+    { "aria-label": "Palengke.es", className: "palengke-global-header__brand", href: homeHref },
     brandContent,
   );
 
   return React.createElement(
     "header",
-    { className: classNames("topbar palengke-global-header", sticky && "palengke-global-header--sticky", className) },
+    { className: classNames("palengke-global-header", sticky && "palengke-global-header--sticky") },
     React.createElement("div", { className: "palengke-global-header__brand-row" }, brand),
     React.createElement(
       "nav",
@@ -170,7 +170,7 @@ export function PalengkeHeader({
     ),
     React.createElement(
       "div",
-      { className: "topbar-actions palengke-global-header__actions", "aria-label": "Palengke features" },
+      { className: "palengke-global-header__actions", "aria-label": "Palengke features" },
       defaultFeatureActions.map((action) => renderFeatureAction(action)),
     ),
   );

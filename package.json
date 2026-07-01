@@ -1,6 +1,6 @@
 {
   "name": "@palengke/shared-header",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Shared Palengke ecosystem header React component",
   "type": "module",
   "main": "./dist/index.js",
