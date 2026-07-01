@@ -127,6 +127,7 @@
 
 @media (max-width: 860px) {
   .palengke-global-header.topbar {
+    flex-wrap: wrap;
     gap: 8px;
     padding: 12px 14px;
   }
@@ -150,11 +151,21 @@
 
 @media (max-width: 680px) {
   .palengke-global-header.topbar {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
 
   .palengke-global-header__tools {
-    display: none;
+    display: flex;
+    flex: 0 0 100%;
+    gap: 6px;
+    order: 3;
+    width: 100%;
+  }
+
+  .palengke-global-header__tool-link {
+    font-size: 0.72rem;
+    min-height: 30px;
+    padding: 6px 9px;
   }
 
   .palengke-global-header__actions.topbar-actions {

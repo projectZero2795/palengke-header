@@ -24,6 +24,7 @@ export type PalengkeHeaderProps = {
   nav?: ReactNode;
   productHref?: string;
   productLabel?: string;
+  showCurrentAppLink?: boolean;
   sticky?: boolean;
 };
 

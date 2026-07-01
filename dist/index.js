@@ -5,7 +5,8 @@ const defaultTools = [
   { label: "Jobs", href: "https://jobs.palengke.es", appKey: "jobs" },
   { label: "Home", href: "https://home.palengke.es", appKey: "home" },
   { label: "Guide", href: "https://guide.palengke.es", appKey: "guide" },
-  { label: "CV", href: "https://cv-creator.palengke.es", appKey: "cv" },
+  { label: "PDF Translator", href: "https://pdf-spanish-to-english.palengke.es", appKey: "pdf" },
+  { label: "CV Creator", href: "https://cv-creator.palengke.es", appKey: "cv" },
 ];
 
 const defaultAdminTabs = [
@@ -53,6 +54,7 @@ export function PalengkeHeader({
   nav = null,
   productHref,
   productLabel,
+  showCurrentAppLink = false,
   sticky = true,
 }) {
   const brandContent = React.createElement(
@@ -89,7 +91,9 @@ export function PalengkeHeader({
       React.createElement(
         "nav",
         { className: "palengke-global-header__tools", "aria-label": "Palengke tools" },
-        appLinks.filter((link) => !link.hide).map((link) => renderLink(link, currentApp)),
+        appLinks
+          .filter((link) => !link.hide && (showCurrentAppLink || !currentApp || link.appKey !== currentApp))
+          .map((link) => renderLink(link, currentApp)),
       ),
     actions ? React.createElement("div", { className: "topbar-actions palengke-global-header__actions" }, actions) : null,
   );
