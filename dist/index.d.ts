@@ -8,6 +8,12 @@ export type PalengkeHeaderToolLink = {
   hide?: boolean;
 };
 
+export type PalengkeAdminTab = {
+  label: string;
+  href: string;
+  appKey?: string;
+};
+
 export type PalengkeHeaderProps = {
   actions?: ReactNode;
   appLinks?: PalengkeHeaderToolLink[];
@@ -29,3 +35,5 @@ export type PalengkeWordmarkProps = {
 export declare function PalengkeWordmark(props?: PalengkeWordmarkProps): ReactNode;
 export declare function PalengkeHeader(props: PalengkeHeaderProps): ReactNode;
 export declare const palengkeHeaderTools: PalengkeHeaderToolLink[];
+export declare function PalengkeAdminTabs(props?: { currentApp?: string; tabs?: PalengkeAdminTab[] }): ReactNode;
+export declare const palengkeAdminTabs: PalengkeAdminTab[];

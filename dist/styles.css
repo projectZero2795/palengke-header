@@ -189,3 +189,44 @@
     display: none;
   }
 }
+
+.palengke-admin-tabs {
+  align-items: center;
+  background: rgba(15, 23, 42, 0.97);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 10px clamp(12px, 3vw, 42px);
+  scrollbar-width: none;
+}
+
+.palengke-admin-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.palengke-admin-tabs__link {
+  align-items: center;
+  background: #111827;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 999px;
+  color: #dbeafe;
+  display: inline-flex;
+  font-size: 0.86rem;
+  font-weight: 950;
+  justify-content: center;
+  min-height: 36px;
+  padding: 7px 14px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.palengke-admin-tabs__link:hover,
+.palengke-admin-tabs__link:focus-visible,
+.palengke-admin-tabs__link.is-active {
+  background: #172033;
+  border-color: rgba(251, 191, 36, 0.56);
+  color: #ffffff;
+  outline: 0;
+}

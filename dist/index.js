@@ -8,6 +8,13 @@ const defaultTools = [
   { label: "CV", href: "https://cv-creator.palengke.es", appKey: "cv" },
 ];
 
+const defaultAdminTabs = [
+  { label: "Palengke", href: "https://palengke.es/admin", appKey: "palengke" },
+  { label: "Jobs", href: "https://jobs.palengke.es/admin", appKey: "jobs" },
+  { label: "Home", href: "https://home.palengke.es/admin", appKey: "home" },
+  { label: "Guide", href: "https://guide.palengke.es/admin", appKey: "guide" },
+];
+
 function classNames(...parts) {
   return parts.filter(Boolean).join(" ");
 }
@@ -90,3 +97,25 @@ export function PalengkeHeader({
 }
 
 export const palengkeHeaderTools = defaultTools;
+
+export function PalengkeAdminTabs({ currentApp, tabs = defaultAdminTabs } = {}) {
+  return React.createElement(
+    "nav",
+    { className: "palengke-admin-tabs", "aria-label": "Palengke admin apps" },
+    tabs.map((tab) => {
+      const isCurrent = Boolean(currentApp && tab.appKey === currentApp);
+      return React.createElement(
+        "a",
+        {
+          className: classNames("palengke-admin-tabs__link", isCurrent && "is-active"),
+          href: tab.href,
+          key: `${tab.appKey || tab.label}:${tab.href}`,
+          "aria-current": isCurrent ? "page" : undefined,
+        },
+        tab.label,
+      );
+    }),
+  );
+}
+
+export const palengkeAdminTabs = defaultAdminTabs;
