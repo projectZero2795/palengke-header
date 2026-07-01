@@ -12,7 +12,6 @@ const defaultAdminTabs = [
   { label: "Palengke", href: "https://palengke.es/admin", appKey: "palengke" },
   { label: "Jobs", href: "https://jobs.palengke.es/admin", appKey: "jobs" },
   { label: "Home", href: "https://home.palengke.es/admin", appKey: "home" },
-  { label: "Guide", href: "https://guide.palengke.es/admin", appKey: "guide" },
 ];
 
 function classNames(...parts) {
