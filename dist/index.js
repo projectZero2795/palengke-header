@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 const defaultTools = [
@@ -17,7 +19,26 @@ const defaultAdminTabs = [
 
 const defaultFeatureActions = [
   { label: "Admin", href: "https://palengke.es/admin", actionKey: "admin", icon: "shield" },
-  { label: "News", href: "https://palengke.es/philippines-news", actionKey: "news", icon: "news" },
+  {
+    label: "News",
+    href: "https://palengke.es/philippines-news",
+    actionKey: "news",
+    icon: "news",
+    menuItems: [
+      {
+        label: "Philippines news",
+        description: "Top 10 latest headlines",
+        href: "https://palengke.es/philippines-news",
+        flag: "🇵🇭",
+      },
+      {
+        label: "Spanish news",
+        description: "Top 10 latest headlines",
+        href: "https://palengke.es/spanish-news",
+        flag: "🇪🇸",
+      },
+    ],
+  },
   { label: "Chat", href: "https://palengke.es/global-chat", actionKey: "chat", icon: "chat" },
   { label: "Wishlist", href: "https://palengke.es/settings/profile", actionKey: "wishlist", icon: "heart" },
   { label: "Notifications", href: "https://palengke.es/settings/profile", actionKey: "notifications", icon: "bell" },
@@ -137,7 +158,100 @@ function renderDefaultActions({ actions, currentApp }) {
   );
 }
 
+function NewsMenu({ action }) {
+  const menuRef = React.useRef(null);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const menuItems = action.menuItems || [
+    {
+      label: "Philippines news",
+      description: "Top 10 latest headlines",
+      href: "https://palengke.es/philippines-news",
+      flag: "🇵🇭",
+    },
+    {
+      label: "Spanish news",
+      description: "Top 10 latest headlines",
+      href: "https://palengke.es/spanish-news",
+      flag: "🇪🇸",
+    },
+  ];
+
+  React.useEffect(() => {
+    function handleClick(event) {
+      if (!menuRef.current?.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  return React.createElement(
+    "div",
+    { className: "news-menu", key: `${action.actionKey}:${action.href}`, ref: menuRef },
+    React.createElement(
+      "button",
+      {
+        "aria-expanded": isOpen,
+        "aria-haspopup": "menu",
+        "aria-label": "Open news menu",
+        className: classNames(
+          "topbar-icon-button",
+          "topbar-icon-button--news",
+          "palengke-global-header__feature-button",
+          "palengke-global-header__feature-button--news",
+        ),
+        onClick: () => setIsOpen((value) => !value),
+        title: action.label,
+        type: "button",
+      },
+      renderIcon(action.icon),
+      React.createElement("span", { className: "palengke-global-header__feature-label" }, action.label),
+    ),
+    isOpen
+      ? React.createElement(
+          "div",
+          { className: "news-menu__dropdown", role: "menu" },
+          React.createElement("strong", null, "News"),
+          menuItems.map((item) =>
+            React.createElement(
+              "a",
+              {
+                href: item.href,
+                key: `${item.label}:${item.href}`,
+                onClick: () => setIsOpen(false),
+                role: "menuitem",
+              },
+              React.createElement("span", { "aria-hidden": "true", className: "news-menu__flag" }, item.flag),
+              React.createElement(
+                "span",
+                null,
+                React.createElement("b", null, item.label),
+                item.description,
+              ),
+            ),
+          ),
+        )
+      : null,
+  );
+}
+
 function renderFeatureAction(action) {
+  if (action.actionKey === "news") {
+    return React.createElement(NewsMenu, { action, key: `${action.actionKey}:${action.href}` });
+  }
+
   return React.createElement(
     "a",
     {
