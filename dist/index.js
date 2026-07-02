@@ -21,7 +21,11 @@ const defaultFeatureActions = [
   { label: "Chat", href: "https://palengke.es/global-chat", actionKey: "chat", icon: "chat" },
   { label: "Wishlist", href: "https://palengke.es/settings/profile", actionKey: "wishlist", icon: "heart" },
   { label: "Notifications", href: "https://palengke.es/settings/profile", actionKey: "notifications", icon: "bell" },
-  { label: "Account", href: "https://palengke.es/settings/profile", actionKey: "account", icon: "account" },
+];
+
+const defaultAuthActions = [
+  { label: "Sign in", href: "https://palengke.es/#login", actionKey: "signin", style: "secondary" },
+  { label: "Sign up", href: "https://palengke.es/#signup", actionKey: "signup", style: "primary" },
 ];
 
 function classNames(...parts) {
@@ -83,28 +87,53 @@ function renderIcon(icon) {
         iconPath({ d: "M10.3 21a2 2 0 0 0 3.4 0" }, "clapper"),
         iconPath({ d: "M4 17h16a1 1 0 0 0 .7-1.7C19.4 14 18 12.5 18 8a6 6 0 0 0-12 0c0 4.5-1.4 6-2.7 7.3A1 1 0 0 0 4 17Z" }, "bell"),
       );
-    case "account":
-      return React.createElement(
-        "span",
-        { className: "palengke-global-header__account-mark", "aria-hidden": "true" },
-        "P",
-      );
     default:
       return null;
   }
 }
 
-function renderLink(link) {
+function renderLink(link, currentApp) {
+  const isCurrent = Boolean(currentApp && link.appKey === currentApp);
   return React.createElement(
     "a",
     {
-      className: "palengke-global-header__tool-link",
+      "aria-current": isCurrent ? "page" : undefined,
+      className: classNames("palengke-global-header__tool-link", isCurrent && "is-active"),
       href: link.href,
       key: `${link.appKey || link.label}:${link.href}`,
       target: link.external ? "_blank" : undefined,
       rel: link.external ? "noreferrer" : undefined,
     },
     link.label,
+  );
+}
+
+function renderAuthAction(action) {
+  return React.createElement(
+    "a",
+    {
+      className: classNames(
+        "topbar-signin",
+        action.style === "secondary" && "secondary",
+        `palengke-global-header__auth-link--${action.actionKey}`,
+      ),
+      href: action.href,
+      key: `${action.actionKey}:${action.href}`,
+    },
+    action.label,
+  );
+}
+
+function renderDefaultActions({ actions, currentApp }) {
+  if (actions && currentApp === "palengke") {
+    return actions;
+  }
+
+  return React.createElement(
+    React.Fragment,
+    null,
+    defaultFeatureActions.map((action) => renderFeatureAction(action)),
+    actions || defaultAuthActions.map((action) => renderAuthAction(action)),
   );
 }
 
@@ -148,30 +177,56 @@ export function PalengkeHeader({
   showCurrentAppLink = true,
   sticky = true,
 }) {
+  const brandIsButton = typeof brandProps.onClick === "function";
   const brandContent = React.createElement(
     React.Fragment,
     null,
     React.createElement(PalengkeWordmark, null),
+    productLabel
+      ? React.createElement(
+          "span",
+          {
+            className: "palengke-global-header__product",
+            "data-href": productHref || undefined,
+          },
+          productLabel,
+        )
+      : null,
   );
   const brand = React.createElement(
-    "a",
-    { "aria-label": "Palengke.es", className: "palengke-global-header__brand", href: homeHref },
+    brandIsButton ? "button" : "a",
+    {
+      ...brandProps,
+      "aria-label": brandProps["aria-label"] || "Palengke.es",
+      className: classNames("palengke-global-header__brand", brandProps.className),
+      href: brandIsButton ? undefined : brandProps.href || homeHref,
+      type: brandIsButton ? "button" : undefined,
+    },
     brandContent,
   );
+  const tools = (appLinks || defaultTools).filter((link) => {
+    if (link.hide) {
+      return false;
+    }
+    if (!showCurrentAppLink && currentApp && link.appKey === currentApp) {
+      return false;
+    }
+    return true;
+  });
 
   return React.createElement(
     "header",
-    { "aria-label": "Palengke ecosystem header", className: classNames("palengke-global-header", sticky && "palengke-global-header--sticky") },
+    { "aria-label": "Palengke ecosystem header", className: classNames("palengke-global-header", sticky && "palengke-global-header--sticky", className) },
     React.createElement("div", { className: "palengke-global-header__brand-row" }, brand),
     React.createElement(
       "nav",
       { className: "palengke-global-header__tools", "aria-label": "Palengke tools" },
-      defaultTools.map((link) => renderLink(link)),
+      nav || tools.map((link) => renderLink(link, currentApp)),
     ),
     React.createElement(
       "div",
       { className: "palengke-global-header__actions", "aria-label": "Palengke features" },
-      defaultFeatureActions.map((action) => renderFeatureAction(action)),
+      renderDefaultActions({ actions, currentApp }),
     ),
   );
 }
