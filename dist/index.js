@@ -161,7 +161,7 @@ export function PalengkeHeader({
 
   return React.createElement(
     "header",
-    { className: classNames("palengke-global-header", sticky && "palengke-global-header--sticky") },
+    { "aria-label": "Palengke ecosystem header", className: classNames("palengke-global-header", sticky && "palengke-global-header--sticky") },
     React.createElement("div", { className: "palengke-global-header__brand-row" }, brand),
     React.createElement(
       "nav",
