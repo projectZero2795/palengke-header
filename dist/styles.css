@@ -750,3 +750,32 @@
   color: #ffffff;
   outline: 0;
 }
+
+/* Clean mobile composition: keep the shared header compact and predictable. */
+@media (max-width: 560px) {
+  .palengke-global-header--clean-mobile,
+  .palengke-global-header {
+    row-gap: 6px;
+  }
+
+  .palengke-global-header__brand-row {
+    max-width: 40vw;
+  }
+
+  .palengke-global-header__actions {
+    max-width: calc(60vw - 10px);
+  }
+
+  .palengke-global-header .topbar-signin,
+  .palengke-global-header .visit-link,
+  .palengke-global-header .ghost,
+  .palengke-global-header .topbar-auth-secondary {
+    min-height: 28px;
+    padding-inline: 8px;
+  }
+
+  .palengke-global-header__tools {
+    border-radius: 18px;
+    min-height: 32px;
+  }
+}
