@@ -856,3 +856,58 @@
     padding: 5px 8px !important;
   }
 }
+
+
+/* UI cleanliness pass 2026-07-02: isolate app auth groups inside mobile header. */
+@media (max-width: 680px) {
+  .palengke-global-header .topbar-auth-actions,
+  .palengke-global-header .account-actions,
+  .palengke-global-header .header-actions {
+    align-items: center !important;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 6px !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    justify-content: center !important;
+    max-width: max-content !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+
+  .palengke-global-header .topbar-auth-actions > *,
+  .palengke-global-header .account-actions > *,
+  .palengke-global-header .header-actions > * {
+    flex: 0 0 auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+
+  .palengke-global-header .topbar-signin,
+  .palengke-global-header .visit-link,
+  .palengke-global-header .ghost,
+  .palengke-global-header .topbar-auth-secondary,
+  .palengke-global-header .icon-text {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .palengke-global-header__actions {
+    justify-content: center !important;
+  }
+
+  .palengke-global-header .topbar-signin,
+  .palengke-global-header .visit-link,
+  .palengke-global-header .ghost,
+  .palengke-global-header .topbar-auth-secondary,
+  .palengke-global-header .icon-text {
+    gap: 5px !important;
+    padding-inline: 8px !important;
+  }
+}
