@@ -17,7 +17,7 @@
   font-family: Arial, sans-serif;
   gap: clamp(8px, 1.5vw, 18px);
   justify-content: space-between;
-  min-height: auto;
+  min-height: 0 !important;
   min-width: 0;
   padding: 12px clamp(16px, 3vw, 40px);
   position: sticky;
