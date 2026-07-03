@@ -15,24 +15,24 @@ export type PalengkeAdminTab = {
 };
 
 export type PalengkeHeaderAccountUser = {
-  id?: string;
-  display_name?: string;
-  email?: string;
-  contact_email?: string;
-  phone?: string;
-  avatar_url?: string;
-  photo_url?: string;
-  picture?: string;
-  account_type?: string;
-  admin_role?: string;
+  id?: string | null;
+  display_name?: string | null;
+  email?: string | null;
+  contact_email?: string | null;
+  phone?: string | null;
+  avatar_url?: string | null;
+  photo_url?: string | null;
+  picture?: string | null;
+  account_type?: string | null;
+  admin_role?: string | null;
   [key: string]: unknown;
 };
 
 export type PalengkeHeaderAccountProfile = {
-  shop_name?: string;
-  slug?: string;
-  avatar_url?: string;
-  contact_email?: string;
+  shop_name?: string | null;
+  slug?: string | null;
+  avatar_url?: string | null;
+  contact_email?: string | null;
   [key: string]: unknown;
 };
 
