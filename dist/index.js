@@ -40,7 +40,6 @@ const defaultFeatureActions = [
     ],
   },
   { label: "Messages", href: "https://palengke.es?openPrivateChats=1", actionKey: "private-chat", icon: "chat" },
-  { label: "Global chat", href: "https://palengke.es/global-chat", actionKey: "chat", icon: "chat" },
   { label: "Wishlist", href: "https://palengke.es/settings/profile", actionKey: "wishlist", icon: "heart" },
   { label: "Notifications", href: "https://palengke.es/settings/profile", actionKey: "notifications", icon: "bell" },
 ];
@@ -622,7 +621,6 @@ function HeaderAccountMenu({ config = {}, currentApp }) {
   if (profileSlug) {
     items.push(renderAccountItem({ href: headerPalengkeHref("/#post"), label: "Post product", glyph: "+" }));
   }
-  items.push(renderAccountItem({ href: headerPalengkeHref("/global-chat"), label: "Global chat", glyph: "💬" }));
   items.push(renderAccountItem({ label: theme === "dark" ? "Light mode" : "Dark mode", glyph: theme === "dark" ? "☀" : "☾", onClick: toggleTheme }));
   items.push(renderAccountItem({ label: "Logout", glyph: "↪", onClick: logout, danger: true }));
 
