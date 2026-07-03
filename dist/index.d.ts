@@ -14,7 +14,45 @@ export type PalengkeAdminTab = {
   appKey?: string;
 };
 
+export type PalengkeHeaderAccountUser = {
+  id?: string;
+  display_name?: string;
+  email?: string;
+  contact_email?: string;
+  phone?: string;
+  avatar_url?: string;
+  photo_url?: string;
+  picture?: string;
+  account_type?: string;
+  admin_role?: string;
+  [key: string]: unknown;
+};
+
+export type PalengkeHeaderAccountProfile = {
+  shop_name?: string;
+  slug?: string;
+  avatar_url?: string;
+  contact_email?: string;
+  [key: string]: unknown;
+};
+
+export type PalengkeHeaderAccount = {
+  user?: PalengkeHeaderAccountUser | null;
+  profile?: PalengkeHeaderAccountProfile | null;
+};
+
+export type PalengkeHeaderAccountConfig = {
+  account?: PalengkeHeaderAccount | PalengkeHeaderAccountUser | null;
+  user?: PalengkeHeaderAccountUser | null;
+  profile?: PalengkeHeaderAccountProfile | null;
+  onLogin?: (mode: "login" | "register") => void;
+  onLogout?: () => void;
+  loginHref?: string;
+  signupHref?: string;
+};
+
 export type PalengkeHeaderProps = {
+  account?: PalengkeHeaderAccountConfig;
   actions?: ReactNode;
   appLinks?: PalengkeHeaderToolLink[];
   brandProps?: (AnchorHTMLAttributes<HTMLAnchorElement> | ButtonHTMLAttributes<HTMLButtonElement>) & { onClick?: () => void };

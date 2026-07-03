@@ -396,6 +396,114 @@
   width: 100%;
 }
 
+.palengke-global-header .account-menu__dropdown {
+  display: grid;
+  gap: 7px;
+  min-width: 268px;
+  padding: 10px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+}
+
+.palengke-global-header .account-menu__dropdown::before {
+  border-bottom: 8px solid rgba(148, 163, 184, 0.22);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: -8px;
+}
+
+.palengke-global-header .account-menu__header {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 3px 4px 9px;
+}
+
+.palengke-global-header .account-menu__header strong {
+  color: #f8fafc;
+  font-size: 0.95rem;
+  font-weight: 950;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.palengke-global-header .account-menu__header span {
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.palengke-global-header .account-menu__item {
+  align-items: center;
+  background: rgba(15, 23, 42, 0.76);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 10px;
+  color: #cbd5e1;
+  cursor: pointer;
+  display: flex;
+  font-family: Arial, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 900;
+  gap: 10px;
+  min-height: 40px;
+  padding: 9px 10px;
+  text-align: left;
+  text-decoration: none;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
+  width: 100%;
+}
+
+.palengke-global-header .account-menu__item:hover,
+.palengke-global-header .account-menu__item:focus-visible {
+  background: rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.4);
+  color: #f8fafc;
+  outline: 0;
+}
+
+.palengke-global-header .account-menu__item--danger {
+  border-color: rgba(248, 113, 113, 0.26);
+  color: #fecaca;
+}
+
+.palengke-global-header .account-menu__item-icon {
+  align-items: center;
+  background: rgba(96, 165, 250, 0.12);
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  border-radius: 999px;
+  color: #93c5fd;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 0.74rem;
+  font-weight: 950;
+  height: 24px;
+  justify-content: center;
+  line-height: 1;
+  width: 24px;
+}
+
+.palengke-global-header .account-menu__item--danger .account-menu__item-icon {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.24);
+  color: #fecaca;
+}
+
+.palengke-global-header__account-auth {
+  flex-wrap: nowrap;
+}
+
 .palengke-global-header .user-chip,
 .palengke-global-header .account-chip,
 .palengke-global-header .account-actions > span {
