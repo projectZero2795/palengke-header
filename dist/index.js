@@ -501,7 +501,7 @@ function renderAccountItem({ href, onClick, label, glyph, danger = false }) {
   return React.createElement("button", { ...props, key: label, type: "button" }, children);
 }
 
-function HeaderAccountMenu({ config = {}, currentApp }) {
+function HeaderAccountMenu({ config = {}, currentApp, appLinks = defaultTools, featureActions = defaultFeatureActions, showCurrentAppLink = true }) {
   const menuRef = React.useRef(null);
   const controlledAccountValue = controlledHeaderAccount(config);
   const isControlled = controlledAccountValue !== undefined;
@@ -575,54 +575,101 @@ function HeaderAccountMenu({ config = {}, currentApp }) {
     setTheme(nextTheme);
   }
 
-  if (!account) {
+  const displayName = account ? headerAccountDisplayName(account) : "Menu";
+  const contactLabel = account ? headerAccountContactLabel(account) : "Sign in, switch apps, and open shortcuts";
+  const avatarUrl = account ? headerAccountAvatarUrl(account) : "";
+  const initials = account ? headerAccountInitials(account) : "";
+  const profileSlug = account?.profile?.slug;
+  const isAdmin = Boolean(account?.user?.admin_role);
+  const menuAppLinks = (appLinks || defaultTools).filter((link) => {
+    if (link.hide) return false;
+    if (!showCurrentAppLink && currentApp && link.appKey === currentApp) return false;
+    return true;
+  });
+  const newsAction = (featureActions || defaultFeatureActions).find((action) => action.actionKey === "news");
+  const newsItems = newsAction?.menuItems || [
+    {
+      label: "Philippines news",
+      description: "Top 10 latest headlines",
+      href: "https://palengke.es/philippines-news",
+      flag: "🇵🇭",
+    },
+    {
+      label: "Spanish news",
+      description: "Top 10 latest headlines",
+      href: "https://palengke.es/spanish-news",
+      flag: "🇪🇸",
+    },
+  ];
+
+  const appItems = menuAppLinks.map((link) => {
+    const isCurrent = Boolean(currentApp && link.appKey === currentApp);
+    return renderAccountItem({
+      href: link.href,
+      label: isCurrent ? `${link.label} · current` : link.label,
+      glyph: isCurrent ? "●" : "↗",
+    });
+  });
+
+  const shortcutItems = (featureActions || defaultFeatureActions)
+    .filter((action) => action.actionKey !== "news")
+    .filter((action) => action.actionKey !== "admin" || isAdmin)
+    .map((action) =>
+      renderAccountItem({
+        href: action.href,
+        label: action.label,
+        glyph: action.actionKey === "admin"
+          ? "✓"
+          : action.actionKey === "private-chat"
+            ? "💬"
+            : action.actionKey === "wishlist"
+              ? "♡"
+              : action.actionKey === "notifications"
+                ? "🔔"
+                : "↗",
+      }),
+    );
+
+  const newsLinks = newsItems.map((item) =>
+    renderAccountItem({
+      href: item.href,
+      label: item.label,
+      glyph: item.flag || "📰",
+    }),
+  );
+
+  const accountItems = [];
+  if (account) {
+    if (profileSlug) {
+      accountItems.push(renderAccountItem({ href: headerPalengkeHref(`/s/${profileSlug}`), label: "Visit profile", glyph: "👤" }));
+      accountItems.push(renderAccountItem({ href: headerPalengkeHref(`/s/${profileSlug}#feed-composer`), label: "Post feed", glyph: "📰" }));
+      accountItems.push(renderAccountItem({ href: headerPalengkeHref("/settings/profile"), label: "Settings", glyph: "⚙" }));
+    } else {
+      accountItems.push(renderAccountItem({ href: headerPalengkeHref("/settings/profile?upgrade=seller"), label: "Become seller", glyph: "🏪" }));
+      accountItems.push(renderAccountItem({ href: headerPalengkeHref("/settings/profile"), label: "Settings", glyph: "⚙" }));
+    }
+    if (isAdmin) {
+      accountItems.push(renderAccountItem({ href: headerPalengkeHref("/admin"), label: "Admin", glyph: "✓" }));
+      accountItems.push(renderAccountItem({ href: headerPalengkeHref("/admin/tickets"), label: "Tickets", glyph: "☑" }));
+      accountItems.push(renderAccountItem({ href: headerPalengkeHref("/admin?section=stats"), label: "Stats", glyph: "▥" }));
+    }
+    if (profileSlug) {
+      accountItems.push(renderAccountItem({ href: headerPalengkeHref("/#post"), label: "Post product", glyph: "+" }));
+    }
+    accountItems.push(renderAccountItem({ label: theme === "dark" ? "Light mode" : "Dark mode", glyph: theme === "dark" ? "☀" : "☾", onClick: toggleTheme }));
+    accountItems.push(renderAccountItem({ label: "Logout", glyph: "↪", onClick: logout, danger: true }));
+  }
+
+  function renderMenuSection(title, children) {
+    const childArray = React.Children.toArray(children).filter(Boolean);
+    if (!childArray.length) return null;
     return React.createElement(
       "div",
-      { className: "topbar-auth-actions palengke-global-header__account-auth" },
-      React.createElement(
-        "button",
-        { className: "topbar-signin secondary", onClick: () => openHeaderAuth("login", config, currentApp), type: "button" },
-        "Sign in",
-      ),
-      React.createElement(
-        "button",
-        {
-          className: "topbar-signin",
-          "data-onboarding": "signup-button",
-          onClick: () => openHeaderAuth("register", config, currentApp),
-          type: "button",
-        },
-        "Sign up",
-      ),
+      { className: "account-menu__section", key: title },
+      React.createElement("strong", { className: "account-menu__section-title" }, title),
+      childArray,
     );
   }
-
-  const displayName = headerAccountDisplayName(account);
-  const contactLabel = headerAccountContactLabel(account);
-  const avatarUrl = headerAccountAvatarUrl(account);
-  const initials = headerAccountInitials(account);
-  const profileSlug = account.profile?.slug;
-  const isAdmin = Boolean(account.user?.admin_role);
-
-  const items = [];
-  if (profileSlug) {
-    items.push(renderAccountItem({ href: headerPalengkeHref(`/s/${profileSlug}`), label: "Visit profile", glyph: "👤" }));
-    items.push(renderAccountItem({ href: headerPalengkeHref(`/s/${profileSlug}#feed-composer`), label: "Post feed", glyph: "📰" }));
-    items.push(renderAccountItem({ href: headerPalengkeHref("/settings/profile"), label: "Settings", glyph: "⚙" }));
-  } else {
-    items.push(renderAccountItem({ href: headerPalengkeHref("/settings/profile?upgrade=seller"), label: "Become seller", glyph: "🏪" }));
-  }
-  if (isAdmin) {
-    items.push(renderAccountItem({ href: headerPalengkeHref("/admin"), label: "Admin", glyph: "✓" }));
-    items.push(renderAccountItem({ href: headerPalengkeHref("/admin/tickets"), label: "Tickets", glyph: "☑" }));
-    items.push(renderAccountItem({ href: headerPalengkeHref("/admin?section=stats"), label: "Stats", glyph: "▥" }));
-    items.push(renderAccountItem({ href: headerPalengkeHref("/admin?section=videos"), label: "Videos", glyph: "▶" }));
-  }
-  if (profileSlug) {
-    items.push(renderAccountItem({ href: headerPalengkeHref("/#post"), label: "Post product", glyph: "+" }));
-  }
-  items.push(renderAccountItem({ label: theme === "dark" ? "Light mode" : "Dark mode", glyph: theme === "dark" ? "☀" : "☾", onClick: toggleTheme }));
-  items.push(renderAccountItem({ label: "Logout", glyph: "↪", onClick: logout, danger: true }));
 
   return React.createElement(
     "div",
@@ -633,14 +680,22 @@ function HeaderAccountMenu({ config = {}, currentApp }) {
         "aria-expanded": isOpen,
         "aria-haspopup": "menu",
         "aria-label": `Account menu for ${displayName}`,
-        className: "account-menu__trigger",
+        className: classNames("account-menu__trigger", !account && "account-menu__trigger--menu"),
         onClick: () => setIsOpen((value) => !value),
         title: displayName,
         type: "button",
       },
-      avatarUrl
-        ? React.createElement("img", { alt: "", src: avatarUrl })
-        : React.createElement("span", null, initials),
+      account
+        ? avatarUrl
+          ? React.createElement("img", { alt: "", src: avatarUrl })
+          : React.createElement("span", null, initials)
+        : React.createElement(
+            "span",
+            { className: "account-menu__hamburger", "aria-hidden": "true" },
+            React.createElement("span", null),
+            React.createElement("span", null),
+            React.createElement("span", null),
+          ),
     ),
     isOpen
       ? React.createElement(
@@ -652,7 +707,31 @@ function HeaderAccountMenu({ config = {}, currentApp }) {
             React.createElement("strong", null, displayName),
             React.createElement("span", null, contactLabel),
           ),
-          items,
+          !account
+            ? React.createElement(
+                "div",
+                { className: "account-menu__auth-actions" },
+                React.createElement(
+                  "button",
+                  { className: "account-menu__auth-button secondary", onClick: () => openHeaderAuth("login", config, currentApp), type: "button" },
+                  "Sign in",
+                ),
+                React.createElement(
+                  "button",
+                  {
+                    className: "account-menu__auth-button",
+                    "data-onboarding": "signup-button",
+                    onClick: () => openHeaderAuth("register", config, currentApp),
+                    type: "button",
+                  },
+                  "Sign up",
+                ),
+              )
+            : null,
+          renderMenuSection("Apps", appItems),
+          renderMenuSection("News", newsLinks),
+          renderMenuSection("Shortcuts", shortcutItems),
+          account ? renderMenuSection("Account", accountItems) : null,
         )
       : null,
   );
@@ -754,21 +833,17 @@ function renderAuthAction(action) {
   );
 }
 
-function renderDefaultActions({ account, actions, currentApp }) {
-  const featureActions = actions && currentApp === "palengke"
-    ? actions
-    : React.createElement(
-        React.Fragment,
-        null,
-        defaultFeatureActions.map((action) => renderFeatureAction(action)),
-        actions,
-      );
-
+function renderDefaultActions({ account, currentApp, appLinks, showCurrentAppLink }) {
   return React.createElement(
-    React.Fragment,
-    null,
-    featureActions,
-    React.createElement(HeaderAccountMenu, { config: account || {}, currentApp, key: "palengke-account-menu" }),
+    HeaderAccountMenu,
+    {
+      appLinks,
+      config: account || {},
+      currentApp,
+      featureActions: defaultFeatureActions,
+      key: "palengke-account-menu",
+      showCurrentAppLink,
+    },
   );
 }
 
@@ -945,11 +1020,19 @@ export function PalengkeHeader({
     }
     return true;
   });
+  const currentTool = tools.find((link) => currentApp && link.appKey === currentApp);
 
   return React.createElement(
     "header",
     { "aria-label": "Palengke ecosystem header", className: classNames("palengke-global-header", sticky && "palengke-global-header--sticky", className) },
-    React.createElement("div", { className: "palengke-global-header__brand-row" }, brand),
+    React.createElement(
+      "div",
+      { className: "palengke-global-header__brand-row" },
+      brand,
+      currentTool
+        ? React.createElement("span", { className: "palengke-global-header__current-chip" }, currentTool.label)
+        : null,
+    ),
     React.createElement(
       "nav",
       { className: "palengke-global-header__tools", "aria-label": "Palengke tools" },
@@ -958,7 +1041,7 @@ export function PalengkeHeader({
     React.createElement(
       "div",
       { className: "palengke-global-header__actions", "aria-label": "Palengke features" },
-      renderDefaultActions({ account, actions, currentApp }),
+      renderDefaultActions({ account, actions, currentApp, appLinks: tools, showCurrentAppLink }),
     ),
   );
 }
