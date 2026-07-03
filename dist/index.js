@@ -39,7 +39,8 @@ const defaultFeatureActions = [
       },
     ],
   },
-  { label: "Chat", href: "https://palengke.es/global-chat", actionKey: "chat", icon: "chat" },
+  { label: "Messages", href: "https://palengke.es?openPrivateChats=1", actionKey: "private-chat", icon: "chat" },
+  { label: "Global chat", href: "https://palengke.es/global-chat", actionKey: "chat", icon: "chat" },
   { label: "Wishlist", href: "https://palengke.es/settings/profile", actionKey: "wishlist", icon: "heart" },
   { label: "Notifications", href: "https://palengke.es/settings/profile", actionKey: "notifications", icon: "bell" },
 ];

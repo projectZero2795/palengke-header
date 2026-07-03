@@ -269,6 +269,12 @@
   color: #fbbf24;
 }
 
+.palengke-global-header__feature-button--private-chat {
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.16), rgba(59, 130, 246, 0.12)), #111827;
+  border-color: rgba(96, 165, 250, 0.34);
+  color: #93c5fd;
+}
+
 .palengke-global-header .topbar-icon-button--global-chat,
 .palengke-global-header__feature-button--chat {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(20, 184, 166, 0.16)), #111827;
