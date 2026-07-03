@@ -49,6 +49,253 @@ const defaultAuthActions = [
   { label: "Sign up", href: "https://palengke.es/#signup", actionKey: "signup", style: "primary" },
 ];
 
+
+const notificationTokenStorageKey = "palengke_access_token";
+const notificationAuthChangedEventName = "palengke-auth-changed";
+const notificationChangedEventName = "palengke-notifications-changed";
+const notificationApiBase = "https://palengke.es/api/backend";
+
+function readCookieValue(name) {
+  if (typeof document === "undefined") return "";
+  const prefix = `${name}=`;
+  const raw = document.cookie
+    .split("; ")
+    .find((item) => item.startsWith(prefix))
+    ?.slice(prefix.length);
+  return raw ? decodeURIComponent(raw) : "";
+}
+
+function readNotificationToken() {
+  if (typeof window === "undefined") return "";
+  const cookieToken = readCookieValue(notificationTokenStorageKey);
+  if (cookieToken) {
+    try {
+      window.localStorage.setItem(notificationTokenStorageKey, cookieToken);
+    } catch {
+      // Ignore private-mode storage errors.
+    }
+    return cookieToken;
+  }
+  try {
+    return window.localStorage.getItem(notificationTokenStorageKey) || "";
+  } catch {
+    return "";
+  }
+}
+
+async function notificationApiFetch(path, init = {}, token) {
+  const response = await fetch(`${notificationApiBase}${path}`, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(init.headers || {}),
+    },
+  });
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) {
+    throw new Error(payload?.detail || payload?.message || "Notifications request failed");
+  }
+  return payload;
+}
+
+function notificationHref(notification) {
+  if (!notification) return "";
+  if (notification.href) return notification.href;
+  if (notification.url) return notification.url;
+  if (notification.link) return notification.link;
+  const threadID = notification.thread?.id || notification.thread_id || notification.chat_thread_id;
+  if (threadID) return `https://palengke.es/global-chat?thread=${encodeURIComponent(threadID)}`;
+  return "https://palengke.es/settings/profile";
+}
+
+function NotificationMenu({ action }) {
+  const menuRef = React.useRef(null);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [token, setToken] = React.useState("");
+  const [notifications, setNotifications] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [status, setStatus] = React.useState("");
+
+  const loadNotifications = React.useCallback(async () => {
+    const nextToken = readNotificationToken();
+    setToken(nextToken);
+    if (!nextToken) {
+      setNotifications([]);
+      setStatus("");
+      return;
+    }
+    setLoading(true);
+    try {
+      const payload = await notificationApiFetch("/me/notifications", {}, nextToken);
+      setNotifications(Array.isArray(payload) ? payload : []);
+      setStatus("");
+    } catch {
+      setNotifications([]);
+      setStatus("Could not load notifications. Try again in a moment.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    void loadNotifications();
+    function handleRefresh() {
+      void loadNotifications();
+    }
+    window.addEventListener(notificationAuthChangedEventName, handleRefresh);
+    window.addEventListener(notificationChangedEventName, handleRefresh);
+    window.addEventListener("focus", handleRefresh);
+    const interval = window.setInterval(handleRefresh, 15000);
+    return () => {
+      window.removeEventListener(notificationAuthChangedEventName, handleRefresh);
+      window.removeEventListener(notificationChangedEventName, handleRefresh);
+      window.removeEventListener("focus", handleRefresh);
+      window.clearInterval(interval);
+    };
+  }, [loadNotifications]);
+
+  React.useEffect(() => {
+    function handleClick(event) {
+      if (!menuRef.current?.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  async function markRead(notification) {
+    if (!token || !notification?.id) return;
+    await notificationApiFetch(`/me/notifications/${notification.id}/read`, { method: "POST", body: "{}" }, token).catch(() => undefined);
+    setNotifications((existing) => existing.filter((item) => item.id !== notification.id));
+  }
+
+  async function clearNotifications() {
+    if (!token) return;
+    await notificationApiFetch("/me/notifications/read", { method: "POST", body: "{}" }, token).catch(() => undefined);
+    setNotifications([]);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event(notificationChangedEventName));
+    }
+  }
+
+  async function openNotification(notification) {
+    const href = notificationHref(notification);
+    if (notification?.id) {
+      await markRead(notification);
+    }
+    setIsOpen(false);
+    if (href && typeof window !== "undefined") {
+      window.location.href = href;
+    }
+  }
+
+  function toggleOpen() {
+    setIsOpen((value) => {
+      const next = !value;
+      if (next) void loadNotifications();
+      return next;
+    });
+  }
+
+  return React.createElement(
+    "div",
+    { className: "notification-menu", key: `${action.actionKey}:${action.href}`, ref: menuRef },
+    React.createElement(
+      "button",
+      {
+        "aria-expanded": isOpen,
+        "aria-haspopup": "menu",
+        "aria-label": "Notifications",
+        className: classNames(
+          "notification-menu__trigger",
+          "palengke-global-header__feature-button",
+          "palengke-global-header__feature-button--notifications",
+        ),
+        onClick: toggleOpen,
+        title: action.label,
+        type: "button",
+      },
+      renderIcon(action.icon),
+      notifications.length > 0 ? React.createElement("span", null, notifications.length) : null,
+    ),
+    isOpen
+      ? React.createElement(
+          "div",
+          { className: "notification-menu__dropdown", role: "menu" },
+          React.createElement(
+            "div",
+            { className: "notification-menu__header" },
+            React.createElement("strong", null, "Notifications"),
+            token && notifications.length > 0
+              ? React.createElement(
+                  "button",
+                  { className: "notification-menu__clear-notifications", onClick: clearNotifications, type: "button" },
+                  "Clear",
+                )
+              : null,
+          ),
+          !token
+            ? React.createElement(
+                "div",
+                { className: "notification-menu__empty" },
+                React.createElement("p", null, "Sign in to see your notifications."),
+                React.createElement("a", { className: "notification-menu__signin", href: "https://palengke.es/#login" }, "Sign in"),
+              )
+            : loading
+              ? React.createElement("p", null, "Loading notifications…")
+              : notifications.length > 0
+                ? notifications.map((notification) =>
+                    React.createElement(
+                      "div",
+                      {
+                        className: classNames("notification-menu__item", notification.is_error && "notification-menu__item--error"),
+                        key: notification.id || `${notification.title}:${notification.body}`,
+                      },
+                      React.createElement(
+                        "button",
+                        { className: "notification-menu__item-main", onClick: () => openNotification(notification), role: "menuitem", type: "button" },
+                        renderIcon(notification.is_error ? "shield" : "bell"),
+                        React.createElement(
+                          "span",
+                          null,
+                          React.createElement("b", null, notification.title || "Notification"),
+                          notification.body || "Open notification",
+                        ),
+                      ),
+                      notification.is_error
+                        ? React.createElement(
+                            "button",
+                            {
+                              "aria-label": `Clear ${notification.title || "notification"}`,
+                              className: "notification-menu__clear-one",
+                              onClick: () => markRead(notification),
+                              title: "Clear",
+                              type: "button",
+                            },
+                            "×",
+                          )
+                        : null,
+                    ),
+                  )
+                : React.createElement("p", null, status || "No new notifications."),
+        )
+      : null,
+  );
+}
+
 function classNames(...parts) {
   return parts.filter(Boolean).join(" ");
 }
@@ -250,6 +497,9 @@ function NewsMenu({ action }) {
 function renderFeatureAction(action) {
   if (action.actionKey === "news") {
     return React.createElement(NewsMenu, { action, key: `${action.actionKey}:${action.href}` });
+  }
+  if (action.actionKey === "notifications") {
+    return React.createElement(NotificationMenu, { action, key: `${action.actionKey}:${action.href}` });
   }
 
   return React.createElement(
